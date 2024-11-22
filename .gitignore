@@ -1,0 +1,8 @@
+# Ignorar el archivo de configuración
+config.py
+
+# Ignorar archivos de entorno
+.env
+
+# Ignorar archivos temporales
+*.tmp
