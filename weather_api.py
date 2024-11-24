@@ -15,8 +15,6 @@ class Get_Weather:
         self.city = city
         self.owm = OWM(api_key)
         self.mgr = self.owm.weather_manager()
-        # self.pollution_mgr = self.owm.airpollution_manager()
-        # self.geocoding_mgr = self.owm.geocoding_manager()
 
     def retrieve_weather(self):
         try:
@@ -39,10 +37,7 @@ class Get_Weather:
                 "humidity": weather.humidity,
                 "status": weather.status,
                 "description": weather.detailed_status,
-                "wind": weather.wind(),
-                # "reference_time": weather.reference_time("iso"),
-                # "sunrise": sunrise_time.strftime('%H:%M:%S'),
-                # "sunset": sunset_time.strftime('%H:%M:%S')
+                "wind": weather.wind()
             }
         return None
 
