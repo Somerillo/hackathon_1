@@ -7,9 +7,6 @@
 # The general idea for this feature is to run a while loop that will stop when the user decides to stop session,
 # i know its possible, but it scapes the scope of this project. So we will only run for 60 cycles to emulate an hour training
 
-# There is an important step to improve, the blood pressure values should be taken as a tuple or dictionary,
-# because when we take max, min those values cant be disconnected
-
 from config import my_apy_key
 from weather_api import Get_Weather
 from mock_tracker import MockTracker
@@ -44,8 +41,6 @@ class SessionManager:
         self.start_time = dt.now()
         self.start_time_readable = dt.now().strftime("%Y-%m-%d %H:%M:%S") # in a format we can actually read like normal people
         self.session_date = dt.now().date()
-        self.temperature = Get_Weather(my_apy_key).get_all_data()["temperature"]
-        self.weather_status = Get_Weather(my_apy_key).get_all_data()["status"]
 
     def run_session(self):
         """
@@ -93,9 +88,7 @@ class SessionManager:
             "min_ox": self.df["oxygen"].min(),
             "start_time": self.start_time_readable,
             "total_time": (self.stop_time - self.start_time).total_seconds(),
-            "session_date": self.session_date,
-            "temperature": self.temperature,
-            "weather_status": self.weather_status
+            "session_date": self.session_date
         }
         return stats
 
@@ -121,10 +114,9 @@ class SessionManager:
         axs[1, 0].plot(x, self.df["blood_pressure_sys"], label="systolic")
         axs[1, 0].plot(x, self.df["blood_pressure_dia"], label="diastolic")
         axs[1, 0].set_title(
-            f"Blood Pressure [mmHg] (* see notes)\n"
-            f"Max: {self.get_stats()['max_bp_sys']}/{self.get_stats()['max_bp_dia']}    "
-            f"Avg: {self.get_stats()['avg_bp_sys']}/{self.get_stats()['avg_bp_dia']}    "
-            f"Min: {self.get_stats()['min_bp_sys']}/{self.get_stats()['min_bp_dia']}"
+            f"Blood Pressure [mmHg]\n"
+            f"Systolic    ( Max: {self.get_stats()['max_bp_sys']}    Avg: {self.get_stats()['avg_bp_sys']}    Min: {self.get_stats()['min_bp_sys']} )\n"
+            f"Diastolic   ( Max: {self.get_stats()['max_bp_dia']}      Avg: {self.get_stats()['avg_bp_dia']}      Min: {self.get_stats()['min_bp_dia']} )"
         )
 
         axs[1, 0].set_ylim(bottom=30, top=210)
@@ -142,9 +134,11 @@ class SessionManager:
         axs[1, 1].set_ylim(bottom=80, top=110)
 
         fig.suptitle(
-            f"Session date: {self.start_time}        "
-            f"Total time: {self.get_stats()["total_time"]/60:.2f} minutes        "
-            f"Weather: {self.get_stats()["weather_status"]}, {self.get_stats()["temperature"]}°C    "
+            f"Session date: {self.start_time}                "
+            f"Total time: {self.get_stats()["total_time"]/60:.2f} minutes",
+            fontsize=18,
+            # fontweight="bold",
+            # ha="right"
             )
 
         plt.tight_layout()
