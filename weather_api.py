@@ -30,8 +30,6 @@ class Get_Weather:
         """
         weather = self.retrieve_weather()
         if weather:
-            sunrise_time = datetime.fromtimestamp(weather.sunrise_time())
-            sunset_time = datetime.fromtimestamp(weather.sunset_time())
             return {
                 "temperature": weather.temperature("celsius")["temp"],
                 "humidity": weather.humidity,
