@@ -7,8 +7,6 @@
 # The general idea for this feature is to run a while loop that will stop when the user decides to stop session,
 # i know its possible, but it scapes the scope of this project. So we will only run for 60 cycles to emulate an hour training
 
-from config import my_apy_key
-from weather_api import Get_Weather
 from mock_tracker import MockTracker
 from datetime import datetime as dt
 import pandas as pd
